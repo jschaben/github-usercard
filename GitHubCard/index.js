@@ -24,7 +24,7 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+// const followersArray = [];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -53,3 +53,95 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+// this is was what they gave us:
+
+const followersArray = [
+  'bkoehler2016',
+  'julieantonio',
+  'Heart8reak',
+  'letanque',
+  'adrianbparra'
+];
+followersArray.forEach(follower => {
+  axios
+    .get(`https://api.github.com/users/${follower}`)
+    .then(response => {
+      console.log(response);
+      const cards = document.querySelector('.cards');
+      cards.append(gitCards(response.data));
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
+function gitCards(data) {
+  function checkIfNull(string) {
+    if (string) return string;
+    return '';
+  }
+  const newCard = document.createElement('div'),
+    newImg = document.createElement('img'),
+    newCardInfo = document.createElement('div'),
+    name = document.createElement('h3'),
+    username = document.createElement('p'),
+    location = document.createElement('p'),
+    profile = document.createElement('p'),
+    profileUrl = document.createElement('a'),
+    followers = document.createElement('p'),
+    following = document.createElement('p'),
+    bio = document.createElement('p');
+
+    newImg.src = data.avatar_url;
+    name.textContent = `${checkIfNull(data.name)}`;
+    username.textContent = data.login;
+    location.textContent = `Location: ${checkIfNull(data.location)}`;
+    profile.textContent = `Profile: ${checkIfNull(data.name)}`;
+    profileUrl.textContent = `Link: ${data.html_url}`;
+    followers.textContent = `Followers: ${checkIfNull(data.followers)}`;
+    following.textContent = `Following: ${checkIfNull(data.following)}`;
+    bio.textContent = `Bio: ${checkIfNull(data.bio)}`;
+
+    newCard.appendChild(newImg);
+    newCard.appendChild(newCardInfo);
+    newCardInfo.appendChild(name);
+    newCardInfo.appendChild(username);
+    newCardInfo.appendChild(location);
+    newCardInfo.appendChild(profile);
+    newCardInfo.appendChild(followers);
+    newCardInfo.appendChild(following);
+    newCardInfo.appendChild(bio);
+    newCardInfo.appendChild(profileUrl);
+
+    newCard.classList.add('card');
+    newCardInfo.classList.add('card-info');
+    name.classList.add('name');
+    username.classList.add('username');
+
+  return newCard;
+}
+
+
+
+
+const cards = document.querySelector('.cards');
+
+axios.get('https://api.github.com/users/jschaben').then(response => {
+  console.log(response.data);
+  cards.appendChild(gitCards(response.data));
+});
+
+// pulls followers but doesnt have same info in API
+// axios
+//   .get('https://api.github.com/users/jschaben/followers')
+//   .then(response => {
+//     response.data.forEach(element => {
+//       const newGitUserCard = new gitCards(element);
+//       cards.appendChild(newGitUserCard);
+//     });
+//   })
+
+//   .catch(you_are_wrong => {
+//     console.log(you_are_wrong);
+//   });
