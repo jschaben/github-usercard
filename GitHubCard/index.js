@@ -56,25 +56,25 @@
 
 // this is was what they gave us:
 
-// const followersArray = [
-//   'tetondan',
-//   'dustinmyers',
-//   'justsml',
-//   'luishrd',
-//   'bigknell'
-// ];
-// followersArray.forEach(follower => {
-//   axios
-//     .get(`https://api.github.com/users/${follower}`)
-//     .then(response => {
-//       console.log(response);
-//       const cards = document.querySelector('.cards');
-//       cards.append(gitCards(response.data));
-//     })
-//     .catch(error => {
-//       console.log(error);
-//     });
-// });
+const followersArray = [
+  'bkoehler2016',
+  'julieantonio',
+  'Heart8reak',
+  'letanque',
+  'adrianbparra'
+];
+followersArray.forEach(follower => {
+  axios
+    .get(`https://api.github.com/users/${follower}`)
+    .then(response => {
+      console.log(response);
+      const cards = document.querySelector('.cards');
+      cards.append(gitCards(response.data));
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
 
 function gitCards(data) {
   function checkIfNull(string) {
@@ -94,7 +94,7 @@ function gitCards(data) {
     bio = document.createElement('p');
 
     newImg.src = data.avatar_url;
-    name.textContent = data.name;
+    name.textContent = `${checkIfNull(data.name)}`;
     username.textContent = data.login;
     location.textContent = `Location: ${checkIfNull(data.location)}`;
     profile.textContent = `Profile: ${checkIfNull(data.name)}`;
@@ -132,16 +132,16 @@ axios.get('https://api.github.com/users/jschaben').then(response => {
   cards.appendChild(gitCards(response.data));
 });
 
+// pulls followers but doesnt have same info in API
+// axios
+//   .get('https://api.github.com/users/jschaben/followers')
+//   .then(response => {
+//     response.data.forEach(element => {
+//       const newGitUserCard = new gitCards(element);
+//       cards.appendChild(newGitUserCard);
+//     });
+//   })
 
-axios
-  .get('https://api.github.com/users/jschaben/followers')
-  .then(response => {
-    response.data.forEach(element => {
-      const newGitUserCard = new gitCards(element);
-      cards.appendChild(newGitUserCard);
-    });
-  })
-
-  .catch(you_did_wrong => {
-    console.log(you_did_wrong);
-  });
+//   .catch(you_are_wrong => {
+//     console.log(you_are_wrong);
+//   });
